@@ -1,0 +1,693 @@
+<title>Granny Pig's Mission Manual</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Titan+One&family=Nunito:wght@500;700;800&display=swap">
+<style>
+/* Layout: a Lego instruction booklet page. The animated build sits on top, the current step card and its parts box beneath, the whole routine as a tick list at the foot. One deliberate light look, so every colour is set explicitly. */
+:root{
+  --paper:#DCE6F0;
+  --paper-deep:#C7D5E3;
+  --ink:#14233A;
+  --muted:#4A5D78;
+  --card:#FFFFFF;
+  --brick-red:#C91A09;
+  --brick-yellow:#F2CD37;
+  --brick-blue:#0055BF;
+  --brick-green:#4B9F4A;
+  --line:#B4C4D6;
+  --display:'Titan One','Arial Rounded MT Bold','Trebuchet MS',system-ui,sans-serif;
+  --body:'Nunito','Segoe UI',system-ui,-apple-system,sans-serif;
+  color-scheme:light;
+}
+html,body{background:var(--paper);color:var(--ink)}
+body{font-family:var(--body);font-size:16px;line-height:1.55}
+.wrap{max-width:1120px;margin:0 auto;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px));padding-block:28px 56px;display:grid;gap:22px}
+
+.top{display:grid;gap:10px}
+.badge{justify-self:start;font-family:var(--display);font-size:.85rem;letter-spacing:.06em;text-transform:uppercase;background:var(--brick-red);color:#fff;padding:6px 12px;border-radius:6px;box-shadow:0 4px 0 #8E1206}
+h1{font-family:var(--display);font-weight:400;font-size:clamp(2rem,5.4vw,3.4rem);line-height:1.05;margin:0;text-wrap:balance;color:var(--ink)}
+.lede{margin:0;max-width:62ch;color:var(--muted);font-size:1.05rem}
+
+.player{display:grid;gap:12px}
+.stage{position:relative;width:100%;max-width:100%;aspect-ratio:16/9;border-radius:16px;overflow:hidden;background:#8FD3F4;border:4px solid var(--ink);box-shadow:0 8px 0 var(--ink)}
+.stage svg{display:block;width:100%;height:100%}
+.bar{display:flex;gap:6px}
+.seg{flex:1;height:14px;border:0;padding:0;border-radius:4px;background:var(--paper-deep);cursor:pointer;position:relative;overflow:hidden}
+.seg span{position:absolute;inset:0 auto 0 0;width:0;background:var(--brick-blue)}
+.seg:focus-visible{outline:3px solid var(--brick-red);outline-offset:2px}
+.controls{display:flex;flex-wrap:wrap;gap:12px;align-items:center}
+.btn{font-family:var(--display);font-size:1rem;letter-spacing:.02em;border:0;cursor:pointer;padding:10px 18px 9px;border-radius:8px;color:var(--ink);background:var(--brick-yellow);box-shadow:0 5px 0 #B8961C;position:relative;margin-top:8px}
+.btn::before{content:"";position:absolute;top:-7px;left:14px;width:20px;height:8px;border-radius:3px 3px 0 0;background:inherit;box-shadow:32px 0 0 0 var(--brick-yellow)}
+.btn.play{background:var(--brick-red);color:#fff;box-shadow:0 5px 0 #8E1206;min-width:110px}
+.btn.play::before{box-shadow:32px 0 0 0 var(--brick-red),64px 0 0 0 var(--brick-red)}
+.btn:active{transform:translateY(3px);box-shadow:0 2px 0 #8E1206}
+.btn:focus-visible{outline:3px solid var(--brick-blue);outline-offset:3px}
+.counter{margin-left:auto;font-weight:800;color:var(--muted);font-variant-numeric:tabular-nums}
+
+.card{display:grid;grid-template-columns:auto 1fr;gap:20px 26px;background:var(--card);border-radius:14px;padding:24px 26px;border:3px solid var(--ink)}
+.num{font-family:var(--display);font-size:5.2rem;line-height:.9;color:var(--brick-blue);min-width:1.1em;text-align:center}
+.num.word{font-size:2.2rem;line-height:1.2;padding-top:8px}
+.cbody{min-width:0;display:grid;gap:8px}
+.ctime{justify-self:start;font-weight:800;font-size:.8rem;letter-spacing:.08em;text-transform:uppercase;background:var(--brick-yellow);padding:3px 10px;border-radius:5px}
+.card h2{font-family:var(--display);font-weight:400;font-size:clamp(1.4rem,3vw,1.9rem);line-height:1.15;margin:0;text-wrap:balance}
+.card p{margin:0;max-width:64ch;font-size:1.08rem}
+.parts{margin-top:6px;background:#EEF3F8;border:2px dashed var(--line);border-radius:10px;padding:10px 14px;display:grid;gap:6px}
+.plabel{font-weight:800;font-size:.75rem;letter-spacing:.1em;text-transform:uppercase;color:var(--muted)}
+.parts ul{list-style:none;margin:0;padding:0;display:flex;flex-wrap:wrap;gap:8px 18px}
+.parts li{font-weight:700}
+.parts li b{font-family:var(--display);font-weight:400;color:var(--brick-red);margin-right:4px}
+
+.sheet{background:var(--card);border-radius:14px;padding:24px 26px;border:3px solid var(--ink);display:grid;gap:12px}
+.sheet h2{font-family:var(--display);font-weight:400;font-size:1.7rem;margin:0}
+.sheet .hint{margin:0;color:var(--muted)}
+.list{list-style:none;margin:0;padding:0;display:grid}
+.list li{display:grid;grid-template-columns:96px 1fr auto;gap:12px;align-items:center;padding:10px 0;border-top:2px solid #E5ECF3}
+.list li:first-child{border-top:0}
+.when{font-weight:800;font-variant-numeric:tabular-nums;color:var(--brick-blue);font-size:.95rem}
+.what{display:flex;gap:10px;align-items:flex-start;min-width:0;cursor:pointer}
+.what input{width:22px;height:22px;margin:2px 0 0;accent-color:var(--brick-green);flex:none}
+.what span{min-width:0}
+.list li.done .what span{text-decoration:line-through;color:var(--muted)}
+.watch{font-family:var(--body);font-weight:800;font-size:.85rem;border:2px solid var(--ink);background:var(--paper);color:var(--ink);border-radius:6px;padding:4px 10px;cursor:pointer}
+.watch:focus-visible{outline:3px solid var(--brick-red);outline-offset:2px}
+footer{font-family:var(--display);font-size:1.2rem;color:var(--muted);text-align:center}
+
+@media (max-width:640px){
+  .card{grid-template-columns:1fr;padding:20px}
+  .num{text-align:left;font-size:3.6rem}
+  .list li{grid-template-columns:1fr auto;grid-template-areas:"when watch" "what what";gap:4px 12px}
+  .when{grid-area:when}.what{grid-area:what}.watch{grid-area:watch}
+  .counter{margin-left:0;width:100%}
+}
+
+/* Stage text */
+.stage .td{font-family:var(--display)}
+.stage .tb{font-family:var(--body);font-weight:800}
+.stage g{transform-box:view-box;transform-origin:0 0}
+
+/* One-shot moves: the resting state is always the finished frame */
+.stage .anim{animation-duration:.6s;animation-fill-mode:both;animation-timing-function:cubic-bezier(.34,1.56,.64,1)}
+.stage .pop{animation-name:pop}
+.stage .drop{animation-name:drop;animation-duration:1s;animation-timing-function:ease-out}
+.stage .fade{animation-name:fade;animation-duration:1s;animation-timing-function:ease}
+.stage .fadeout{animation-name:fadeout;animation-duration:.8s;animation-timing-function:ease;opacity:0}
+.stage .stamp{animation-name:stamp;animation-duration:.4s;animation-timing-function:cubic-bezier(.5,0,.75,0)}
+.stage .drive{animation-name:drive;animation-duration:4s;animation-timing-function:cubic-bezier(.55,0,.9,.4)}
+.stage .walk{animation-name:walk;animation-duration:6.5s;animation-timing-function:linear}
+.stage .crawl{animation-name:crawl;animation-duration:9s;animation-timing-function:linear}
+.stage .toast{animation-name:toastpop;animation-duration:.9s;animation-timing-function:ease-out}
+.stage .sunrise{animation-name:sunrise;animation-duration:5s;animation-timing-function:ease-out}
+.stage .m30{animation-name:m30;animation-duration:4s;animation-timing-function:ease-in-out}
+.stage .h30{animation-name:h30;animation-duration:4s;animation-timing-function:ease-in-out}
+.stage .rise{animation-name:rise;animation-duration:.7s}
+@keyframes pop{from{transform:scale(0)}to{transform:scale(1)}}
+@keyframes drop{0%{transform:translateY(-560px)}60%{transform:translateY(0)}78%{transform:translateY(-18px)}100%{transform:translateY(0)}}
+@keyframes fade{from{opacity:0}to{opacity:1}}
+@keyframes fadeout{from{opacity:1}to{opacity:0}}
+@keyframes stamp{from{transform:scale(2.6) rotate(-8deg);opacity:0}to{transform:scale(1) rotate(-8deg);opacity:1}}
+@keyframes drive{0%{transform:translateX(0)}8%{transform:translateX(-12px)}100%{transform:translateX(1150px)}}
+@keyframes walk{from{transform:translateX(0)}to{transform:translateX(520px)}}
+@keyframes crawl{from{transform:translateX(0)}to{transform:translateX(380px)}}
+@keyframes toastpop{0%{transform:translateY(60px)}55%{transform:translateY(-34px)}100%{transform:translateY(0)}}
+@keyframes sunrise{from{transform:translateY(150px)}to{transform:translateY(0)}}
+@keyframes m30{from{transform:rotate(-180deg)}to{transform:rotate(0)}}
+@keyframes h30{from{transform:rotate(-15deg)}to{transform:rotate(0)}}
+@keyframes rise{from{transform:translateY(22px)}to{transform:translateY(0)}}
+
+/* Loops */
+.stage .bob{animation:bob .45s ease-in-out infinite alternate}
+.stage .wave{animation:wave .6s ease-in-out infinite alternate}
+.stage .waveL{animation:waveL .6s ease-in-out infinite alternate}
+.stage .spin{animation:spin 1s linear infinite}
+.stage .spinSlow{animation:spin 12s linear infinite}
+.stage .zzz{animation:zzz 2.6s ease-out infinite}
+.stage .twinkle{animation:twinkle 1.6s ease-in-out infinite alternate}
+.stage .brush{animation:brush .2s ease-in-out infinite alternate}
+.stage .sip{animation:sip 5s ease-in-out infinite}
+.stage .fall{animation:fall 4s linear infinite}
+.stage .steam{animation:steam 2.2s ease-out infinite}
+.stage .shake{animation:shake .12s linear infinite alternate}
+.stage .float{animation:float 5s ease-in-out infinite alternate}
+.stage .jump{animation:jump .5s ease-in-out infinite alternate}
+@keyframes bob{from{transform:translateY(0)}to{transform:translateY(-6px)}}
+@keyframes wave{from{transform:rotate(0)}to{transform:rotate(-28deg)}}
+@keyframes waveL{from{transform:rotate(0)}to{transform:rotate(28deg)}}
+@keyframes spin{to{transform:rotate(360deg)}}
+@keyframes zzz{0%{transform:translate(0,0);opacity:0}20%{opacity:1}100%{transform:translate(34px,-90px);opacity:0}}
+@keyframes twinkle{from{opacity:.25}to{opacity:1}}
+@keyframes brush{from{transform:translateX(-7px)}to{transform:translateX(7px)}}
+@keyframes sip{0%,15%,85%,100%{transform:translate(0,0)}35%,65%{transform:translate(-178px,-62px)}}
+@keyframes fall{from{transform:translateY(-140px) rotate(0)}to{transform:translateY(860px) rotate(400deg)}}
+@keyframes steam{0%{transform:translateY(0);opacity:0}30%{opacity:.9}100%{transform:translateY(-34px);opacity:0}}
+@keyframes shake{from{transform:translateX(-1.5px)}to{transform:translateX(1.5px)}}
+@keyframes float{from{transform:translateX(0)}to{transform:translateX(40px)}}
+@keyframes jump{from{transform:translateY(0)}to{transform:translateY(-14px)}}
+
+.stage.paused *{animation-play-state:paused!important}
+@media (prefers-reduced-motion:reduce){.stage *{animation:none!important}}
+</style>
+
+<div class="wrap">
+  <header class="top">
+    <span class="badge">Lincoln weekend edition</span>
+    <h1>Granny Pig's Mission Manual</h1>
+    <p class="lede">Joshua and Charlotte are away in Lincoln, so Granny Pig is in charge of Forest and Otto. Here is the whole routine, built brick by brick, from bedtime to the school gate.</p>
+  </header>
+
+  <section class="player" aria-label="Animation">
+    <div class="stage" id="stage"></div>
+    <div class="bar" id="bar"></div>
+    <div class="controls">
+      <button class="btn" id="prev" type="button">Back</button>
+      <button class="btn play" id="play" type="button">Pause</button>
+      <button class="btn" id="next" type="button">Next</button>
+      <button class="btn" id="restart" type="button">From the top</button>
+      <span class="counter" id="counter"></span>
+    </div>
+  </section>
+
+  <article class="card" aria-live="polite">
+    <div class="num" id="cNum">1</div>
+    <div class="cbody">
+      <span class="ctime" id="cTime"></span>
+      <h2 id="cTitle"></h2>
+      <p id="cText"></p>
+      <div class="parts">
+        <span class="plabel">Parts needed</span>
+        <ul id="cParts"></ul>
+      </div>
+    </div>
+  </article>
+
+  <section class="sheet">
+    <h2>The routine at a glance</h2>
+    <p class="hint">Tick things off as you go. Tap Watch to replay that part of the animation.</p>
+    <ol class="list" id="list"></ol>
+  </section>
+
+  <footer>Thank you, Granny Pig. Love, Joshua and Charlotte</footer>
+</div>
+
+<script>
+(() => {
+const C={red:'#C91A09',yellow:'#F2CD37',blue:'#0055BF',navy:'#0A3463',green:'#237841',lgreen:'#4B9F4A',orange:'#FE8A18',white:'#FFFFFF',black:'#1B2A34',lgrey:'#A0A5A9',dgrey:'#6C6E68',pink:'#FC97AC',dpink:'#D0688F',tan:'#E4CD9E',brown:'#583927',rbrown:'#82422A',azure:'#36AEBF',lazure:'#ADE5F0',lav:'#CDB8E8',purple:'#6C3E99',cream:'#FFF1C9'};
+
+function shade(hex,f){
+  const n=parseInt(hex.slice(1),16);let c=[n>>16,n>>8&255,n&255];
+  c=c.map(v=>f<1?v*f:v+(255-v)*(f-1));
+  return '#'+c.map(v=>Math.round(Math.min(255,Math.max(0,v))).toString(16).padStart(2,'0')).join('');
+}
+
+// Place something: outer group positions it, inner group carries the animation
+function P(x,y,inner,o={}){
+  const s=o.s||1, fl=o.flip?-1:1;
+  let st='';
+  if(o.anim){
+    const style=`animation-delay:${o.d||0}s;${o.dur?`animation-duration:${o.dur}s;`:''}`;
+    st=` class="${o.loop?'':'anim '}${o.anim}" style="${style}"`;
+  }
+  return `<g transform="translate(${x} ${y}) scale(${s*fl} ${s})"><g${st}>${inner}</g></g>`;
+}
+
+/* ---------- Minifigures ---------- */
+function arm(x,y,a,col,cls){
+  return `<g transform="translate(${x} ${y}) rotate(${a})"><g${cls?` class="${cls}"`:''}><rect x="-7" y="-4" width="14" height="38" rx="7" fill="${col}"/><circle cy="40" r="8.5" fill="${C.yellow}"/><circle cy="43" r="3.6" fill="${shade(C.yellow,.75)}"/></g></g>`;
+}
+function eyesOpen(ey){return `<ellipse cx="-8" cy="${ey}" rx="2.7" ry="3.7" fill="${C.black}"/><ellipse cx="8" cy="${ey}" rx="2.7" ry="3.7" fill="${C.black}"/><circle cx="-7" cy="${ey-1.4}" r="1" fill="#fff"/><circle cx="9" cy="${ey-1.4}" r="1" fill="#fff"/>`}
+function eyesShut(ey){return `<path d="M-12 ${ey} Q-8 ${ey+4} -4 ${ey} M4 ${ey} Q8 ${ey+4} 12 ${ey}" stroke="${C.black}" stroke-width="2.4" fill="none" stroke-linecap="round"/>`}
+function face(s,ht){
+  const ey=ht+16;let f='';
+  if(s.cheeks) f+=`<circle cx="-14" cy="${ht+26}" r="4" fill="${C.pink}"/><circle cx="14" cy="${ht+26}" r="4" fill="${C.pink}"/>`;
+  f+= s.expr==='sleep'?eyesShut(ey):eyesOpen(ey);
+  if(s.expr==='grin') f+=`<path d="M-10 ${ht+25} Q0 ${ht+37} 10 ${ht+25} Z" fill="${C.black}"/><path d="M-7 ${ht+25.5} H7 L6 ${ht+28} H-6 Z" fill="#fff"/>`;
+  else if(s.expr==='wow') f+=`<ellipse cx="0" cy="${ht+29}" rx="4" ry="5" fill="${C.black}"/>`;
+  else if(s.expr==='sleep') f+=`<path d="M-4 ${ht+29} H4" stroke="${C.black}" stroke-width="2.4" stroke-linecap="round"/>`;
+  else f+=`<path d="M-9 ${ht+26} Q0 ${ht+34} 9 ${ht+26}" stroke="${C.black}" stroke-width="2.6" fill="none" stroke-linecap="round"/>`;
+  if(s.glasses) f+=`<circle cx="-8" cy="${ey}" r="7" fill="none" stroke="${C.black}" stroke-width="2"/><circle cx="8" cy="${ey}" r="7" fill="none" stroke="${C.black}" stroke-width="2"/><path d="M-1 ${ey} H1" stroke="${C.black}" stroke-width="2"/>`;
+  const lid=`<rect x="-15" y="${ey-6}" width="30" height="12" fill="${C.yellow}"/>${eyesShut(ey)}`;
+  if(s.sleepIn!=null) f+=`<g class="anim fade" style="animation-delay:${s.sleepIn}s">${lid}</g>`;
+  if(s.wakeIn!=null) f+=`<g class="anim fadeout" style="animation-delay:${s.wakeIn}s">${lid}</g>`;
+  return f;
+}
+function hair(s,ht){
+  const h=s.hairC;
+  switch(s.hair){
+    case 'granny': return `<circle cx="0" cy="${ht-12}" r="12" fill="${h}"/><path d="M-24 ${ht+22} Q-26 ${ht-8} 0 ${ht-6} Q26 ${ht-8} 24 ${ht+22} Q20 ${ht+8} 10 ${ht+6} Q0 ${ht+3} -10 ${ht+6} Q-20 ${ht+8} -24 ${ht+22} Z" fill="${h}"/><path d="M-18 ${ht-2} L-30 ${ht-26} L-6 ${ht-8} Z" fill="${C.pink}" stroke="${C.dpink}" stroke-width="2" stroke-linejoin="round"/><path d="M18 ${ht-2} L30 ${ht-26} L6 ${ht-8} Z" fill="${C.pink}" stroke="${C.dpink}" stroke-width="2" stroke-linejoin="round"/><path d="M-22 ${ht-2} Q0 ${ht-10} 22 ${ht-2}" stroke="${C.dpink}" stroke-width="4" fill="none"/>`;
+    case 'boy': return `<path d="M-24 ${ht+18} Q-27 ${ht-10} 0 ${ht-10} Q27 ${ht-10} 24 ${ht+18} L19 ${ht+6} L13 ${ht+11} L7 ${ht+4} L0 ${ht+11} L-7 ${ht+4} L-13 ${ht+11} L-19 ${ht+6} Z" fill="${h}"/><path d="M-10 ${ht-8} L-4 ${ht-18} L2 ${ht-9} L9 ${ht-17} L12 ${ht-7}" fill="${h}"/>`;
+    case 'toddler': return `<path d="M-22 ${ht+12} Q-24 ${ht-6} 0 ${ht-6} Q24 ${ht-6} 22 ${ht+12} Q12 ${ht+3} 0 ${ht+6} Q-12 ${ht+3} -22 ${ht+12} Z" fill="${h}"/><path d="M-2 ${ht-5} Q-6 ${ht-20} 6 ${ht-18} Q10 ${ht-14} 4 ${ht-12}" stroke="${h}" stroke-width="5" fill="none" stroke-linecap="round"/>`;
+    case 'man': return `<path d="M-23 ${ht+14} Q-25 ${ht-8} 0 ${ht-8} Q25 ${ht-8} 23 ${ht+14} Q20 ${ht+4} 6 ${ht+5} Q-14 ${ht+2} -23 ${ht+14} Z" fill="${h}"/>`;
+    case 'long': return `<path d="M-24 ${ht+20} Q-27 ${ht-9} 0 ${ht-9} Q27 ${ht-9} 24 ${ht+20} Q16 ${ht+4} -4 ${ht+3} Q-14 ${ht+8} -24 ${ht+20} Z" fill="${h}"/>`;
+  }
+  return '';
+}
+function print(p,tb,tt){
+  const m=(tb+tt)/2;
+  switch(p){
+    case 'pig': return `<circle cx="-7" cy="${m-12}" r="2.4" fill="${C.black}"/><circle cx="7" cy="${m-12}" r="2.4" fill="${C.black}"/><ellipse cx="0" cy="${m+2}" rx="12" ry="9" fill="${C.dpink}"/><ellipse cx="-4" cy="${m+2}" rx="2" ry="3" fill="${shade(C.dpink,.55)}"/><ellipse cx="4" cy="${m+2}" rx="2" ry="3" fill="${shade(C.dpink,.55)}"/>`;
+    case 'stars': return [[-12,m-10],[8,m-14],[-2,m+2],[12,m+8],[-14,m+12]].map(([x,y])=>`<circle cx="${x}" cy="${y}" r="2.6" fill="#fff"/>`).join('');
+    case 'dino': return `<path d="M-14 ${m+10} Q-12 ${m-4} 0 ${m-4} L6 ${m-14} Q14 ${m-14} 14 ${m-8} L8 ${m-6} L8 ${m+2} L12 ${m+10} Z" fill="${C.green}"/>`;
+    case 'badge': return `<path d="M6 ${m-14} H18 V${m-6} Q12 ${m} 6 ${m-6} Z" fill="${C.yellow}"/>`;
+    case 'vneck': return `<path d="M-9 ${tt} L0 ${tt+12} L9 ${tt}" fill="#fff"/>`;
+    case 'zip': return `<path d="M0 ${tt+4} V${tb}" stroke="${shade('#000000',1.3)}" stroke-width="2"/>`;
+  }
+  return '';
+}
+function fig(o={}){
+  const s={shirt:C.red,pants:C.blue,kid:false,expr:'smile',armL:10,armR:-10,...o};
+  const legH=s.kid?30:62, lt=-legH, hipT=lt-10, tb=hipT, tt=tb-54, nk=tt-5, ht=nk-40;
+  const pc=s.pants;
+  let g='';
+  if(s.hair==='long') g+=`<path d="M-26 ${ht+4} Q-30 ${ht+56} -25 ${tt+20} L25 ${tt+20} Q30 ${ht+56} 26 ${ht+4} Z" fill="${s.hairC}"/>`;
+  g+=`<rect x="-27" y="${hipT}" width="54" height="12" rx="2" fill="${shade(pc,.86)}"/>`;
+  for(const lx of [-27,1]) g+=`<rect x="${lx}" y="${lt}" width="26" height="${legH}" rx="3" fill="${pc}"/><rect x="${lx}" y="-7" width="26" height="7" rx="2" fill="${shade(pc,.78)}"/>`;
+  if(s.nappy) g+=`<path d="M-29 ${hipT-1} H29 L27 ${lt+12} Q0 ${lt+22} -27 ${lt+12} Z" fill="#fff" stroke="#D5DDE3" stroke-width="2"/>`;
+  g+=`<path d="M-30 ${tb} L30 ${tb} L23 ${tt} L-23 ${tt} Z" fill="${s.shirt}"/>`;
+  g+=print(s.print,tb,tt);
+  g+=arm(-25,tt+7,s.armL,s.sleeve||s.shirt,s.armLc);
+  g+=arm(25,tt+7,s.armR,s.sleeve||s.shirt,s.armRc);
+  g+=`<rect x="-9" y="${nk-1}" width="18" height="7" fill="${C.yellow}"/>`;
+  g+=`<rect x="-11" y="${ht-8}" width="22" height="11" rx="2" fill="${shade(C.yellow,.9)}"/>`;
+  g+=`<rect x="-21" y="${ht}" width="42" height="40" rx="10" fill="${C.yellow}"/><rect x="10" y="${ht+3}" width="8" height="34" rx="4" fill="#000" opacity=".06"/>`;
+  g+=face(s,ht);
+  g+=hair(s,ht);
+  if(s.front) g+=s.front;
+  return g;
+}
+const GRANNY=o=>({shirt:C.pink,pants:C.purple,hair:'granny',hairC:'#D9DDE1',print:'pig',glasses:true,cheeks:true,...o});
+const FOREST=o=>({kid:true,shirt:C.lgreen,pants:C.navy,hair:'boy',hairC:C.brown,print:'dino',...o});
+const OTTO=o=>({kid:true,shirt:C.orange,pants:C.blue,hair:'toddler',hairC:'#C99A3C',...o});
+const PJF=o=>FOREST({shirt:'#7FB3E8',pants:'#7FB3E8',print:'stars',...o});
+const PJO=o=>OTTO({shirt:'#9AD08A',pants:'#9AD08A',print:'stars',...o});
+
+/* ---------- Props ---------- */
+function brick(x,y,w,h,col){
+  const n=Math.max(1,Math.round(w/44)), gap=w/n;let s='';
+  for(let i=0;i<n;i++) s+=`<rect x="${x+gap*i+gap/2-12}" y="${y-8}" width="24" height="10" rx="2" fill="${shade(col,.88)}"/>`;
+  return s+`<rect x="${x}" y="${y}" width="${w}" height="${h}" rx="5" fill="${col}"/><rect x="${x}" y="${y+h-7}" width="${w}" height="7" rx="3" fill="${shade(col,.8)}"/>`;
+}
+function brickText(t,w,h,col,fg,size){
+  return brick(-w/2,-h/2,w,h,col)+`<text y="${size*.36-2}" text-anchor="middle" class="td" font-size="${size}" fill="${fg}">${t}</text>`;
+}
+function tag(t,o={}){
+  const sz=o.size||22, w=t.length*sz*.56+38, h=sz+22, bg=o.bg||'#fff', fg=o.fg||C.black;
+  return `<rect x="${-w/2}" y="${-h/2+4}" width="${w}" height="${h}" rx="10" fill="${shade(bg,.72)}"/><rect x="${-w/2}" y="${-h/2}" width="${w}" height="${h}" rx="10" fill="${bg}"/><text y="${sz*.36}" text-anchor="middle" class="${o.body?'tb':'td'}" font-size="${sz}" fill="${fg}">${t}</text>`;
+}
+function bubble(t,o={}){
+  const sz=o.size||24, w=t.length*sz*.58+44, h=sz+30, dx=o.dx||0, cy=-18-h/2;
+  return `<path d="M-10 -21 L0 0 L12 -21 Z" fill="#fff" stroke="${C.black}" stroke-width="3" stroke-linejoin="round"/><rect x="${dx-w/2}" y="${cy-h/2}" width="${w}" height="${h}" rx="${h/2}" fill="#fff" stroke="${C.black}" stroke-width="3"/><path d="M-7 -19.5 H9" stroke="#fff" stroke-width="5"/><text x="${dx}" y="${cy+sz*.36}" text-anchor="middle" class="td" font-size="${sz}" fill="${C.black}">${t}</text>`;
+}
+function board(title,items,d0,step,w=330){
+  const rh=52, h=72+items.length*rh+6;
+  let s=`<rect x="7" y="9" width="${w}" height="${h}" rx="12" fill="#000" opacity=".15"/><rect width="${w}" height="${h}" rx="12" fill="#fff" stroke="${C.navy}" stroke-width="4"/><path d="M2 14 Q2 2 14 2 H${w-14} Q${w-2} 2 ${w-2} 14 V56 H2 Z" fill="${C.blue}"/><text x="20" y="39" class="td" font-size="24" fill="#fff">${title}</text>`;
+  items.forEach((it,i)=>{
+    const y=92+i*rh;
+    s+=`<rect x="20" y="${y-18}" width="30" height="30" rx="6" fill="#fff" stroke="${C.navy}" stroke-width="3"/><g transform="translate(35 ${y-3})"><g class="anim pop" style="animation-delay:${d0+i*step}s"><path d="M-10 0 L-3 8 L13 -13" stroke="${C.lgreen}" stroke-width="6" fill="none" stroke-linecap="round" stroke-linejoin="round"/></g></g><text x="64" y="${y+7}" class="tb" font-size="21" fill="${C.black}">${it}</text>`;
+  });
+  return s;
+}
+function head(step,time){
+  const tw=time.length*13+44;
+  return `<g transform="translate(26 32)">${brick(0,0,150,50,C.blue)}<text x="75" y="34" text-anchor="middle" class="td" font-size="24" fill="#fff">${step}</text>${brick(162,0,tw,50,C.yellow)}<text x="${162+tw/2}" y="34" text-anchor="middle" class="td" font-size="21" fill="${C.black}">${time}</text></g>`;
+}
+function wall(col){return `<rect width="1280" height="560" fill="${col}"/><rect width="1280" height="560" fill="url(#bl)"/>`}
+function tiled(){return `<rect width="1280" height="560" fill="url(#tiles)"/>`}
+function sky(id){return `<rect width="1280" height="720" fill="url(#${id})"/>`}
+function floor(p){return `<rect y="556" width="1280" height="164" fill="url(#${p})"/><rect y="552" width="1280" height="8" fill="#000" opacity=".14"/>`}
+function cloud(){return `<g fill="#fff"><circle cx="-40" cy="0" r="26"/><circle cx="0" cy="-14" r="34"/><circle cx="42" cy="0" r="26"/><rect x="-66" y="0" width="134" height="26" rx="13"/></g>`}
+let clipN=0;
+function windowEl(w,h,fill,inner=''){
+  const id='cw'+(++clipN);
+  return `<clipPath id="${id}"><rect width="${w}" height="${h}"/></clipPath><rect x="-12" y="-12" width="${w+24}" height="${h+24}" rx="6" fill="#fff"/><g clip-path="url(#${id})"><rect width="${w}" height="${h}" fill="${fill}"/>${inner}</g><rect x="${w/2-5}" width="10" height="${h}" fill="#fff"/><rect y="${h/2-5}" width="${w}" height="10" fill="#fff"/><rect x="-22" y="${h+8}" width="${w+44}" height="16" rx="4" fill="#E6E9EC"/>`;
+}
+function clock(h,m,o={}){
+  const r=o.r||54, ma=m*6, ha=(h%12)*30+m*.5;
+  let s=`<circle r="${r+9}" fill="${o.rim||C.red}"/><circle r="${r}" fill="#fff"/>`;
+  for(let i=0;i<12;i++) s+=`<rect x="-2" y="${-r+5}" width="4" height="${i%3?6:11}" fill="${C.black}" transform="rotate(${i*30})"/>`;
+  const hs=o.hs?` style="${o.hs}"`:'', ms=o.ms?` style="${o.ms}"`:'';
+  s+=`<g transform="rotate(${ha})"><g class="${o.hc||''}"${hs}><rect x="-4.5" y="${-r*.5}" width="9" height="${r*.5+8}" rx="4.5" fill="${C.black}"/></g></g>`;
+  s+=`<g transform="rotate(${ma})"><g class="${o.mc||''}"${ms}><rect x="-3" y="${-r*.84}" width="6" height="${r*.84+8}" rx="3" fill="${C.blue}"/></g></g>`;
+  return s+`<circle r="6" fill="${C.black}"/>`;
+}
+function house(){
+  return `<rect x="66" y="-252" width="36" height="70" fill="${C.rbrown}"/><rect x="-140" y="-172" width="280" height="172" fill="#F4F4F4"/><rect x="-140" y="-172" width="280" height="172" fill="url(#bl)"/><path d="M-162 -168 L0 -264 L162 -168 Z" fill="${C.red}"/><rect x="-162" y="-178" width="324" height="12" rx="3" fill="${shade(C.red,.78)}"/>`
+   +`<rect x="-26" y="-104" width="52" height="104" rx="4" fill="${C.blue}"/><circle cx="14" cy="-52" r="4.5" fill="${C.yellow}"/>`
+   +[-92,92].map(x=>`<rect x="${x-32}" y="-146" width="64" height="54" fill="${C.lazure}" stroke="${C.yellow}" stroke-width="7"/><path d="M${x} -146 V-92 M${x-32} -119 H${x+32}" stroke="${C.yellow}" stroke-width="5"/>`).join('');
+}
+function lincolnSign(){
+  return `<rect x="-70" y="-200" width="12" height="200" fill="${C.lgrey}"/><rect x="58" y="-200" width="12" height="200" fill="${C.lgrey}"/><rect x="-108" y="-222" width="216" height="118" rx="10" fill="${C.green}" stroke="#fff" stroke-width="5"/><text y="-168" text-anchor="middle" class="tb" font-size="40" fill="#fff">Lincoln</text><rect x="-34" y="-150" width="68" height="32" rx="4" fill="${C.yellow}"/><text y="-125" text-anchor="middle" class="tb" font-size="24" fill="${C.black}">A46</text>`;
+}
+function car(){
+  const wheel=x=>`<g transform="translate(${x} -30)"><circle r="30" fill="${C.black}"/><circle r="14" fill="${C.lgrey}"/><circle r="5" fill="${C.dgrey}"/></g>`;
+  return P(-46,-58,fig({shirt:C.navy,pants:C.black,hair:'man',hairC:C.brown,print:'vneck',armR:-150,armRc:'wave',expr:'grin'}),{s:.8})
+    +P(34,-58,fig({shirt:C.azure,pants:C.black,hair:'long',hairC:'#7A4A22',expr:'grin',armL:150,armLc:'waveL'}),{s:.8})
+    +`<rect x="-148" y="-156" width="64" height="44" rx="6" fill="${C.tan}"/><rect x="-124" y="-166" width="16" height="12" rx="3" fill="none" stroke="${C.brown}" stroke-width="4"/>`
+    +`<path d="M84 -112 L104 -170 L116 -170 L98 -112 Z" fill="${C.lazure}" opacity=".85"/>`
+    +`<rect x="-152" y="-116" width="304" height="80" rx="16" fill="${C.red}"/><rect x="-152" y="-52" width="304" height="16" rx="6" fill="${shade(C.red,.75)}"/>`
+    +[100,128].map(x=>`<rect x="${x-10}" y="-124" width="20" height="9" rx="2" fill="${shade(C.red,.88)}"/>`).join('')
+    +`<rect x="140" y="-100" width="12" height="18" rx="3" fill="${C.yellow}"/><rect x="-152" y="-100" width="10" height="16" rx="3" fill="${C.red}" stroke="${shade(C.red,.6)}" stroke-width="2"/>`
+    +wheel(-95)+wheel(95);
+}
+function road(y){
+  let s=`<rect y="${y}" width="1280" height="${720-y}" fill="${C.dgrey}"/><rect y="${y}" width="1280" height="8" fill="${C.lgrey}"/>`;
+  for(let x=20;x<1280;x+=120) s+=`<rect x="${x}" y="${y+46}" width="64" height="9" rx="3" fill="#fff"/>`;
+  return s;
+}
+function bath(){
+  let s='';
+  for(const x of [-180,180]) s+=`<path d="M${x-14} -30 L${x+14} -30 L${x+8} 0 L${x-8} 0 Z" fill="${C.yellow}"/>`;
+  s+=`<path d="M-230 -150 H230 L214 -46 Q204 -18 172 -18 H-172 Q-204 -18 -214 -46 Z" fill="#fff" stroke="#CFD8DF" stroke-width="3"/><rect x="-242" y="-164" width="484" height="20" rx="10" fill="${C.lazure}"/><path d="M200 -164 V-206 H224" stroke="${C.lgrey}" stroke-width="10" fill="none" stroke-linecap="round"/>`;
+  return s;
+}
+function duck(){return `<ellipse cx="0" cy="-16" rx="24" ry="16" fill="${C.yellow}"/><circle cx="14" cy="-36" r="13" fill="${C.yellow}"/><path d="M25 -38 L38 -34 L25 -30 Z" fill="${C.orange}"/><circle cx="17" cy="-40" r="2.5" fill="${C.black}"/>`}
+function bubbles(){return `<g fill="#fff" stroke="#BFE7F2" stroke-width="2"><circle cx="-24" cy="-10" r="18"/><circle cx="6" cy="-20" r="22"/><circle cx="34" cy="-8" r="15"/></g>`}
+function stamp(t){return `<rect x="-200" y="-42" width="400" height="84" rx="10" fill="#fff" fill-opacity=".85" stroke="${C.red}" stroke-width="7"/><text y="13" text-anchor="middle" class="td" font-size="34" fill="${C.red}">${t}</text>`}
+function towelRail(){return `<rect x="-70" y="-6" width="140" height="10" rx="5" fill="${C.lgrey}"/><path d="M-56 0 H56 V110 Q0 120 -56 110 Z" fill="${C.azure}"/><rect x="-56" y="86" width="112" height="10" fill="#fff" opacity=".7"/>`}
+function bed(o={}){
+  const w=o.w||340, hw=w/2;let s='';
+  s+=`<rect x="${-hw-14}" y="-262" width="28" height="262" rx="6" fill="${shade(C.rbrown,.8)}"/><rect x="${hw-14}" y="-262" width="28" height="262" rx="6" fill="${shade(C.rbrown,.8)}"/><rect x="${-hw}" y="-246" width="${w}" height="190" rx="18" fill="${C.rbrown}"/>`;
+  s+=`<rect x="${-hw+18}" y="-178" width="${hw-28}" height="46" rx="18" fill="#fff"/><rect x="10" y="-178" width="${hw-28}" height="46" rx="18" fill="#fff"/>`;
+  if(o.kids){
+    const kf={sleepIn:o.sleepIn,wakeIn:o.wakeIn,expr:o.expr||'smile'};
+    const kid=(x,f,sc)=>o.rise!=null?P(x,-50,`<g class="anim rise" style="animation-delay:${o.rise}s">${fig(f)}</g>`,{s:sc}):P(x,-50,fig(f),{s:sc});
+    s+=kid(-62,PJF(kf),.85)+kid(62,PJO(kf),.78);
+  }
+  s+=`<rect x="${-hw}" y="-72" width="${w}" height="40" fill="#EDEDED"/><path d="M${-hw-6} -118 Q0 -134 ${hw+6} -118 L${hw+6} -40 L${-hw-6} -40 Z" fill="${o.duvet||C.azure}"/>`;
+  for(let i=0;i<7;i++) s+=`<circle cx="${-hw+30+i*((w-60)/6)}" cy="${-92+(i%2)*22}" r="5" fill="#fff" opacity=".8"/>`;
+  s+=`<rect x="${-hw-16}" y="-46" width="${w+32}" height="28" rx="5" fill="${C.rbrown}"/>`;
+  if(o.pjs) s+=P(-70,-112,pjFold('#7FB3E8'),{anim:'drop',d:o.pjs})+P(70,-112,pjFold('#9AD08A'),{anim:'drop',d:o.pjs+.25});
+  return s;
+}
+function pjFold(c){return `<rect x="-46" y="-30" width="92" height="32" rx="8" fill="${c}"/><rect x="-46" y="-30" width="92" height="9" rx="4" fill="${shade(c,.85)}"/><path d="M-10 -30 L0 -20 L10 -30" fill="#fff"/>${[-28,18,30].map(x=>`<circle cx="${x}" cy="-10" r="3" fill="#fff"/>`).join('')}`}
+function bedside(inner=''){return `<rect x="-58" y="-96" width="116" height="96" rx="4" fill="${C.tan}"/><rect x="-64" y="-104" width="128" height="12" rx="3" fill="${shade(C.tan,.85)}"/><rect x="-44" y="-74" width="88" height="30" rx="3" fill="none" stroke="${shade(C.tan,.75)}" stroke-width="3"/><circle cy="-59" r="4" fill="${C.brown}"/>${inner}`}
+function cup(c){return `<rect x="-14" y="-44" width="28" height="44" rx="8" fill="${c}"/><rect x="-16" y="-52" width="32" height="11" rx="4" fill="#fff"/><path d="M-5 -51 L-3 -64 H3 L5 -51 Z" fill="#fff"/>`}
+function potty(){return `<rect x="-36" y="-50" width="72" height="12" rx="6" fill="${shade(C.pink,.85)}"/><path d="M-32 -42 H32 L26 -8 Q24 0 14 0 H-14 Q-24 0 -26 -8 Z" fill="${C.pink}"/>`}
+function nappy(){return `<path d="M-40 -46 H40 L34 -14 Q0 6 -34 -14 Z" fill="#fff" stroke="#CFD8DF" stroke-width="3"/><rect x="-44" y="-50" width="16" height="12" rx="3" fill="${C.azure}"/><rect x="28" y="-50" width="16" height="12" rx="3" fill="${C.azure}"/><circle cx="-8" cy="-26" r="4" fill="${C.yellow}"/><circle cx="10" cy="-22" r="4" fill="${C.pink}"/>`}
+function books(){return [[C.red,0],[C.blue,-22],[C.lgreen,-44]].map(([c,y],i)=>`<rect x="${-40+i*4}" y="${y-22}" width="${80-i*8}" height="22" rx="3" fill="${c}"/><rect x="${-34+i*4}" y="${y-16}" width="${68-i*8}" height="4" fill="#fff" opacity=".7"/>`).join('')}
+function openBook(){return `<g transform="translate(0 -88)"><path d="M0 -6 Q-22 -16 -44 -8 V24 Q-22 16 0 26 Q22 16 44 24 V-8 Q22 -16 0 -6 Z" fill="${C.red}"/><path d="M0 -2 Q-20 -10 -38 -4 V20 Q-20 13 0 22 Z" fill="#fff"/><path d="M0 -2 Q20 -10 38 -4 V20 Q20 13 0 22 Z" fill="#F6F1E4"/><path d="M-30 4 H-8 M-30 10 H-10 M8 4 H30 M10 10 H30" stroke="${C.lgrey}" stroke-width="2"/></g>`}
+function mug(){return `<g transform="translate(56 -96)">${[-6,4].map((x,i)=>`<g transform="translate(${x} -30)"><g class="steam" style="animation-delay:${i*1.1}s"><path d="M0 0 q-6 -8 0 -16 q6 -8 0 -16" stroke="#fff" stroke-width="4" fill="none" stroke-linecap="round"/></g></g>`).join('')}<rect x="-14" y="-28" width="28" height="30" rx="5" fill="#fff" stroke="${C.navy}" stroke-width="2"/><path d="M14 -20 q12 0 12 9 q0 9 -12 9" stroke="${C.navy}" stroke-width="4" fill="none"/><path d="M-8 -16 q8 -6 16 0 q-8 10 -16 0" fill="${C.dpink}"/></g>`}
+function lightSwitch(t){return `<rect x="-26" y="-38" width="52" height="76" rx="8" fill="#fff" stroke="#CFD8DF" stroke-width="3"/><g class="anim fadeout" style="animation-delay:${t}s"><rect x="-10" y="-24" width="20" height="24" rx="4" fill="${C.lgrey}"/></g><g class="anim fade" style="animation-delay:${t}s"><rect x="-10" y="0" width="20" height="24" rx="4" fill="${C.dgrey}"/></g>`}
+function moon(){return `<circle r="30" fill="#FFF4C2"/><circle cx="13" cy="-8" r="26" fill="#18254A"/>`}
+function star(){return `<path d="M0 -10 L3 -3 L10 0 L3 3 L0 10 L-3 3 L-10 0 L-3 -3 Z" fill="#FFF4C2"/>`}
+function sun(){let s=`<circle r="40" fill="${C.yellow}"/>`;for(let i=0;i<8;i++) s+=`<rect x="-4" y="-66" width="8" height="18" rx="4" fill="${C.yellow}" transform="rotate(${i*45})"/>`;return s}
+function zzz(x,y,d){return P(x,y,`<text class="td" font-size="40" fill="#fff" stroke="${C.navy}" stroke-width="2" paint-order="stroke">Z</text>`,{anim:'zzz',loop:true,d})}
+function counter(){return `<rect x="-150" y="-150" width="300" height="150" fill="#fff"/><path d="M0 -150 V0" stroke="#D5DDE3" stroke-width="3"/><circle cx="-14" cy="-80" r="5" fill="${C.lgrey}"/><circle cx="14" cy="-80" r="5" fill="${C.lgrey}"/><rect x="-162" y="-164" width="324" height="18" rx="3" fill="${C.dgrey}"/>`}
+function toaster(d){return `<g transform="translate(0 -164)"><g transform="translate(-16 -46)"><g class="anim toast" style="animation-delay:${d}s"><rect x="-22" y="-40" width="44" height="60" rx="12" fill="#D9A55B"/><rect x="-17" y="-34" width="34" height="50" rx="9" fill="#F2D49A"/></g></g><g transform="translate(18 -46)"><g class="anim toast" style="animation-delay:${d+.15}s"><rect x="-22" y="-40" width="44" height="60" rx="12" fill="#D9A55B"/><rect x="-17" y="-34" width="34" height="50" rx="9" fill="#F2D49A"/></g></g><rect x="-56" y="-62" width="112" height="62" rx="16" fill="${C.lgrey}"/><rect x="-44" y="-66" width="40" height="8" rx="3" fill="${C.dgrey}"/><rect x="4" y="-66" width="40" height="8" rx="3" fill="${C.dgrey}"/><rect x="42" y="-40" width="20" height="8" rx="3" fill="${C.black}"/></g>`}
+function table(w){return `<rect x="${-w/2+16}" y="-104" width="16" height="104" fill="${shade(C.rbrown,.75)}"/><rect x="${w/2-32}" y="-104" width="16" height="104" fill="${shade(C.rbrown,.75)}"/><rect x="${-w/2}" y="-122" width="${w}" height="22" rx="5" fill="${C.rbrown}"/><rect x="${-w/2+8}" y="-102" width="${w-16}" height="18" fill="${shade(C.rbrown,.85)}"/>`}
+function plate(){return `<ellipse cx="0" cy="-6" rx="58" ry="12" fill="#fff" stroke="#D5DDE3" stroke-width="2"/><path d="M-36 -12 L-30 -44 Q-12 -54 4 -44 L-4 -12 Z" fill="#D9A55B"/><path d="M-32 -14 L-27 -40 Q-13 -48 0 -40 L-7 -14 Z" fill="#F2D49A"/><path d="M8 -12 Q30 -6 46 -26 Q42 -14 26 -12 Z" fill="${C.yellow}" stroke="#C9A52A" stroke-width="2"/><circle cx="16" cy="-24" r="8" fill="${C.red}"/><path d="M16 -32 L18 -38" stroke="${C.green}" stroke-width="3"/><circle cx="34" cy="-14" r="5" fill="${C.purple}"/><circle cx="40" cy="-18" r="5" fill="${C.purple}"/>`}
+function snail(){return `<path d="M-30 0 Q-34 -10 -22 -10 H22 Q30 -10 34 -22 L38 -32 M30 -12 L28 -30" stroke="${C.tan}" stroke-width="7" fill="none" stroke-linecap="round"/><circle cx="38" cy="-32" r="3.5" fill="${C.black}"/><circle cx="28" cy="-30" r="3.5" fill="${C.black}"/><circle cx="0" cy="-26" r="20" fill="${C.orange}"/><path d="M0 -26 m-3 0 a3 3 0 1 1 6 0 a7 7 0 1 1 -14 0 a11 11 0 1 1 22 0" stroke="${shade(C.orange,.7)}" stroke-width="3" fill="none"/>`}
+function toilet(inner){return `<rect x="-52" y="-178" width="104" height="84" rx="10" fill="#fff" stroke="#CFD8DF" stroke-width="3"/><rect x="-14" y="-170" width="28" height="10" rx="4" fill="${C.lgrey}"/>${inner}<rect x="-66" y="-90" width="132" height="16" rx="8" fill="#fff" stroke="#CFD8DF" stroke-width="3"/><path d="M-60 -76 H60 Q58 -40 30 -30 L24 0 H-24 L-30 -30 Q-58 -40 -60 -76 Z" fill="#fff" stroke="#CFD8DF" stroke-width="3"/>`}
+function sink(){return `<rect x="-22" y="-140" width="44" height="140" fill="#fff" stroke="#CFD8DF" stroke-width="3"/><path d="M-96 -176 H96 Q90 -132 40 -128 H-40 Q-90 -132 -96 -176 Z" fill="#fff" stroke="#CFD8DF" stroke-width="3"/><rect x="-100" y="-184" width="200" height="12" rx="6" fill="#fff" stroke="#CFD8DF" stroke-width="3"/><path d="M-6 -184 V-208 H18 V-198" stroke="${C.lgrey}" stroke-width="8" fill="none"/><g transform="translate(64 -184)">${cup(C.azure)}</g>`}
+function mirror(){return `<ellipse rx="86" ry="100" fill="${C.lgrey}"/><ellipse rx="78" ry="92" fill="#D8F1F7"/><path d="M-40 -40 L-10 -70 M-30 -10 L20 -60" stroke="#fff" stroke-width="8" stroke-linecap="round" opacity=".8"/>`}
+function toothbrush(){return `<g class="brush"><rect x="-80" y="-6" width="120" height="12" rx="6" fill="${C.red}"/><rect x="36" y="-12" width="44" height="12" rx="4" fill="#fff"/>${[40,48,56,64,72].map(x=>`<rect x="${x}" y="-24" width="5" height="13" fill="${C.lazure}"/>`).join('')}<path d="M38 -26 q20 -16 42 0" fill="#fff"/></g>`}
+function pram(inner=''){return `<path d="M-70 -76 A72 72 0 0 1 0 -146 V-76 Z" fill="${C.navy}"/><path d="M-60 -116 A60 60 0 0 1 -10 -140" stroke="#fff" stroke-width="3" fill="none" opacity=".5"/>${inner}<path d="M-74 -84 H74 Q74 -32 30 -32 H-30 Q-74 -32 -74 -84 Z" fill="${C.blue}"/><path d="M-60 -82 L-112 -112" stroke="${C.black}" stroke-width="8" stroke-linecap="round"/><path d="M-40 -32 L-40 -20 M40 -32 L40 -20" stroke="${C.black}" stroke-width="5"/>${[-42,42].map(x=>`<g transform="translate(${x} -20)"><circle r="20" fill="${C.black}"/><circle r="8" fill="${C.lgrey}"/></g>`).join('')}`}
+function school(){
+  let s=`<rect x="-50" y="-318" width="100" height="100" fill="${shade(C.rbrown,.9)}"/><path d="M-62 -316 L0 -360 L62 -316 Z" fill="${C.dgrey}"/>`+P(0,-268,clock(8,40,{r:30,rim:C.yellow}));
+  s+=`<rect x="-190" y="-232" width="380" height="232" fill="${C.rbrown}"/><rect x="-190" y="-232" width="380" height="232" fill="url(#bl)"/><rect x="-200" y="-244" width="400" height="16" rx="3" fill="${C.dgrey}"/>`;
+  s+=`<rect x="-112" y="-214" width="224" height="46" rx="6" fill="${C.blue}"/><text y="-181" text-anchor="middle" class="td" font-size="30" fill="#fff">SCHOOL</text>`;
+  for(const x of [-150,-90,90,150]) s+=`<rect x="${x-22}" y="-150" width="44" height="50" fill="${C.lazure}" stroke="#fff" stroke-width="5"/>`;
+  s+=`<rect x="-40" y="-110" width="80" height="110" rx="4" fill="${C.green}"/><path d="M0 -110 V0" stroke="${shade(C.green,.7)}" stroke-width="3"/>`;
+  return s;
+}
+function mini(){return `<rect x="-36" y="-34" width="72" height="22" rx="7" fill="${C.blue}"/><path d="M-18 -34 L-10 -48 H14 L22 -34 Z" fill="${C.lazure}"/><circle cx="-20" cy="-10" r="10" fill="${C.black}"/><circle cx="20" cy="-10" r="10" fill="${C.black}"/>`}
+function confetti(){
+  const cols=[C.red,C.yellow,C.blue,C.lgreen,C.orange,C.pink,'#fff'];let s='';
+  for(let i=0;i<22;i++){
+    const x=30+i*57+((i*37)%23), c=cols[i%cols.length], d=-((i*0.73)%4).toFixed(2), dur=(3.2+(i%5)*.45).toFixed(2);
+    s+=`<g transform="translate(${x} 0)"><g class="fall" style="animation-delay:${d}s;animation-duration:${dur}s"><rect x="-8" y="-12" width="6" height="5" rx="1" fill="${c}"/><rect x="2" y="-12" width="6" height="5" rx="1" fill="${c}"/><rect x="-14" y="-8" width="28" height="16" rx="3" fill="${c}"/></g></g>`;
+  }
+  return s;
+}
+const DEFS=`<defs>${[['sg','#4B9F4A'],['sgr','#A0A5A9'],['st','#D9BB7B'],['sn','#2B3A5E']].map(([id,c])=>`<pattern id="${id}" width="40" height="40" patternUnits="userSpaceOnUse"><rect width="40" height="40" fill="${c}"/><circle cx="21.5" cy="21.5" r="11" fill="${shade(c,.8)}"/><circle cx="20" cy="20" r="11" fill="${shade(c,1.12)}"/></pattern>`).join('')}
+<pattern id="bl" width="80" height="40" patternUnits="userSpaceOnUse"><path d="M0 1H80 M0 21H80 M1 0V20 M41 20V40" stroke="#000" stroke-opacity=".07" stroke-width="2" fill="none"/></pattern>
+<pattern id="tiles" width="64" height="64" patternUnits="userSpaceOnUse"><rect width="64" height="64" fill="#F3F5F6"/><path d="M6 54 Q22 42 28 24 T58 6" stroke="#C6CDD3" stroke-width="1.3" fill="none"/><path d="M30 60 Q40 50 44 38" stroke="#D3D9DE" stroke-width="1" fill="none"/><rect x="1" y="1" width="62" height="62" fill="none" stroke="#BCC7D1" stroke-width="2"/></pattern>
+<linearGradient id="gDay" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#7CC6EE"/><stop offset="1" stop-color="#D6F0FB"/></linearGradient>
+<linearGradient id="gEve" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#5B5BA8"/><stop offset=".6" stop-color="#F28C6B"/><stop offset="1" stop-color="#FFD27A"/></linearGradient>
+<linearGradient id="gNight" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#0D1636"/><stop offset="1" stop-color="#22325E"/></linearGradient>
+<linearGradient id="gDawn" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#8FD3F4"/><stop offset="1" stop-color="#FFE0A3"/></linearGradient>
+</defs>`;
+
+/* ---------- Scenes ---------- */
+function sTitle(){
+  return sky('gDay')+P(170,110,cloud(),{anim:'float',loop:true})+P(1060,90,cloud(),{s:.8,anim:'float',loop:true,d:-2})+P(800,300,cloud(),{s:.55,anim:'float',loop:true,d:-1})
+   +floor('sg')+road(624)
+   +P(190,604,house())
+   +P(1130,604,lincolnSign(),{anim:'pop',d:.8})
+   +P(360,604,fig(GRANNY({armR:-150,armRc:'wave',expr:'grin'})),{anim:'pop',d:.3})
+   +P(460,604,fig(FOREST({armR:-150,armRc:'wave',expr:'grin'})),{s:.85,anim:'pop',d:.45})
+   +P(570,604,fig(OTTO({armL:150,armLc:'waveL'})),{s:.75,anim:'pop',d:.6})
+   +P(360,394,tag('Granny Pig',{size:18}),{anim:'pop',d:1.4})
+   +P(460,452,tag('Forest',{size:18}),{anim:'pop',d:1.55})
+   +P(570,472,tag('Otto',{size:18}),{anim:'pop',d:1.7})
+   +P(800,696,car(),{anim:'drive',d:3.4})
+   +P(640,96,brickText("GRANNY PIG'S",560,82,C.red,'#fff',54),{anim:'drop',d:.1})
+   +P(640,194,brickText('MISSION MANUAL',660,82,C.yellow,C.black,54),{anim:'drop',d:.4})
+   +P(640,276,tag('Joshua and Charlotte are off to Lincoln',{size:20,body:true}),{anim:'pop',d:1.2});
+}
+function sBath(){
+  return tiled()+floor('sgr')+head('STEP 1','Tonight')
+   +P(1120,210,towelRail())
+   +P(640,604,bath())
+   +P(470,444,duck(),{anim:'pop',d:.5})
+   +[[560,.7],[650,.85],[740,.95],[820,1.05]].map(([x,d])=>P(x,442,bubbles(),{anim:'pop',d})).join('')
+   +P(640,530,stamp('DONE LAST NIGHT'),{anim:'stamp',d:1.4})
+   +P(300,604,fig(GRANNY({armR:-150,armRc:'wave',expr:'grin'})),{anim:'pop',d:.2})
+   +P(980,604,`<g class="jump">${fig(FOREST({armL:150,armR:-150,armLc:'waveL',armRc:'wave',expr:'grin'}))}</g>`,{s:.85,anim:'pop',d:3})
+   +P(964,460,bubble('BATH! BATH!',{dx:-40}),{anim:'pop',d:3.5})
+   +P(640,170,tag('Unless Forest demands one. He usually does.',{size:22,bg:C.yellow,body:true}),{anim:'pop',d:5});
+}
+function sBed(){
+  return wall('#E2D6F2')+floor('st')+head('STEP 2','7.00pm')
+   +P(110,120,windowEl(170,170,'url(#gEve)',P(120,140,sun(),{s:.7})))
+   +P(470,170,clock(7,0),{anim:'pop',d:.3})
+   +P(600,604,bed({pjs:1}))
+   +P(860,604,bedside(P(-24,-104,cup(C.red),{anim:'pop',d:6})+P(24,-104,cup(C.blue),{anim:'pop',d:6.15})))
+   +P(930,120,board('Before bed',['Pyjamas on','Wee for both','Nappy on Otto','Drinks go up'],1.4,1.55))
+   +P(200,604,fig(GRANNY({armR:-40})),{anim:'pop',d:.2})
+   +P(300,604,fig(FOREST({expr:'grin'})),{s:.85,anim:'pop',d:.3})
+   +P(372,604,fig(OTTO()),{s:.75,anim:'pop',d:.4})
+   +P(330,664,potty(),{anim:'pop',d:2.9})
+   +P(440,668,nappy(),{anim:'pop',d:4.5})
+   +P(470,262,tag('Up at 7.00pm',{size:20,bg:C.yellow}),{anim:'pop',d:.6});
+}
+function sStory(){
+  const night=`<g class="anim fade" style="animation-delay:4.8s;animation-duration:1.4s"><rect width="170" height="170" fill="url(#gNight)"/>${P(118,58,moon())}${P(40,40,star(),{anim:'twinkle',loop:true})}${P(70,120,star(),{s:.7,anim:'twinkle',loop:true,d:-.8})}</g>`;
+  return wall('#E2D6F2')+floor('st')
+   +P(110,120,windowEl(170,170,'url(#gEve)',night))
+   +P(1040,320,lightSwitch(4.6))
+   +P(640,604,bed({kids:true,sleepIn:5.6}))
+   +P(880,604,bedside(P(0,-104,books(),{anim:'pop',d:.5})))
+   +P(330,604,fig(GRANNY({armL:-28,armR:28,front:openBook()})),{anim:'pop',d:.2})
+   +`<g class="anim fade" style="animation-delay:4.8s;animation-duration:1.4s"><rect width="1280" height="720" fill="#0B1530" fill-opacity=".62"/></g>`
+   +zzz(600,420,6.2)+zzz(690,440,7)
+   +P(640,180,tag('Books, then lights off',{size:24,bg:'#fff'}),{anim:'pop',d:1.2})
+   +P(640,240,tag('They just snuggle down and drift off',{size:20,bg:C.yellow,body:true}),{anim:'pop',d:5.8})
+   +head('STEP 3','Story time');
+}
+function sNight(){
+  const view=`${P(110,60,moon())}${[[30,30],[70,120],[150,140],[40,90]].map(([x,y],i)=>P(x,y,star(),{s:.8,anim:'twinkle',loop:true,d:-i*.5})).join('')}`;
+  return wall('#1E2A4A')+floor('sn')+head('STEP 4','Overnight')
+   +P(110,120,windowEl(170,170,'url(#gNight)',view))
+   +P(640,604,bed({kids:true,expr:'sleep',duvet:'#2E7F8C'}))
+   +P(880,604,bedside(P(-24,-104,cup(C.red))+P(24,-104,cup(C.blue),{anim:'sip',loop:true,d:1})))
+   +zzz(590,420,0)+zzz(700,436,1.3)
+   +P(640,180,tag('If they wake, drinks are right there',{size:22}),{anim:'pop',d:.5})
+   +P(640,240,tag('A little sip, then straight back to sleep',{size:20,bg:C.yellow,body:true}),{anim:'pop',d:2.4});
+}
+function sMorning(){
+  const view=`${P(85,150,`<g class="anim sunrise">${sun()}</g>`,{s:.9})}`;
+  return wall('#FFE9BE')+floor('st')+head('STEP 5','6.30am to 7.00am')
+   +P(110,120,windowEl(170,170,'url(#gDawn)',view))
+   +P(470,170,clock(7,0,{hc:'anim h30',mc:'anim m30',hs:'animation-delay:.6s',ms:'animation-delay:.6s'}))
+   +P(640,604,bed({kids:true,wakeIn:4.7,rise:4.7}))
+   +P(1050,604,fig(GRANNY({armR:-45,front:mug()})),{anim:'pop',d:.2})
+   +P(470,262,tag('6.30ish: a bit of stirring',{size:19,body:true}),{anim:'pop',d:.4})
+   +P(470,318,tag('7.00: up on their own',{size:21,bg:C.yellow}),{anim:'pop',d:4.8})
+   +P(706,410,bubble('Morning!',{size:20,dx:50}),{anim:'pop',d:5.4});
+}
+function sBreakfast(){
+  return wall(C.cream)+`<rect y="330" width="1280" height="130" fill="url(#tiles)"/>`+floor('st')+head('STEP 6','7.00am')
+   +P(200,604,counter()+toaster(1))
+   +P(1110,170,clock(7,15,{hc:'spinSlow',mc:'spin'}),{anim:'pop',d:.3})
+   +P(1110,270,tag('Allow plenty of time',{size:19,body:true}),{anim:'pop',d:2.6})
+   +P(620,522,fig(FOREST()),{s:.85,anim:'pop',d:.2})
+   +P(800,522,fig(OTTO({expr:'wow'})),{s:.78,anim:'pop',d:.3})
+   +P(710,604,table(480))
+   +P(620,486,plate(),{anim:'pop',d:1.7})
+   +P(800,486,plate(),{anim:'pop',d:1.9})
+   +P(500,492,snail(),{s:.8,anim:'crawl'})
+   +P(816,404,bubble('Something else!',{size:22,dx:30}),{anim:'pop',d:4.4})
+   +P(640,170,tag('Breakfast first: toast and fruit',{size:24,bg:'#fff'}),{anim:'pop',d:.8})
+   +P(640,228,tag('The quickest option, unless Otto has other ideas',{size:18,bg:C.yellow,body:true}),{anim:'pop',d:5.4});
+}
+function sBathroom(){
+  return tiled()+floor('sgr')+head('STEP 7','Before leaving')
+   +P(300,604,toilet(P(0,-50,fig(FOREST({shirt:C.yellow,pants:C.yellow,print:null,expr:'grin'})),{s:.85})),{anim:'pop',d:.2})
+   +P(300,370,tag('1  Forest: poo (naked)',{size:20,bg:'#fff'}),{anim:'pop',d:.8})
+   +P(640,290,mirror())
+   +P(640,604,sink())
+   +P(600,410,toothbrush(),{anim:'pop',d:2.8})
+   +P(640,150,tag('2  Forest: brush teeth',{size:20,bg:'#fff'}),{anim:'pop',d:3})
+   +P(930,604,P(0,-12,fig(OTTO({shirt:C.orange,expr:'grin'})),{s:.78})+potty(),{anim:'pop',d:5})
+   +P(930,394,tag('3  Otto: wee on the potty',{size:20,bg:'#fff'}),{anim:'pop',d:5.4})
+   +P(1150,604,fig(GRANNY({armR:-150,armRc:'wave'})),{anim:'pop',d:.4})
+   +P(640,662,tag('Then get them dressed',{size:26,bg:C.yellow}),{anim:'pop',d:7.6});
+}
+function sSchool(){
+  const group=P(0,0,`<g class="bob">${fig(GRANNY({armR:-62}))}</g>`)
+    +P(170,0,pram(P(-8,-44,fig(OTTO({shirt:C.red,print:'zip',expr:'grin'})),{s:.7})))
+    +P(320,0,`<g class="bob" style="animation-delay:-.2s">${fig(FOREST({shirt:C.navy,pants:C.dgrey,print:'badge',armL:150,armLc:'waveL',expr:'grin'}))}</g>`,{s:.85});
+  return sky('gDay')+P(600,100,cloud(),{s:.8,anim:'float',loop:true})+floor('sg')
+   +`<rect y="596" width="1280" height="56" fill="${C.lgrey}"/><rect y="596" width="1280" height="6" fill="#fff" opacity=".5"/>`
+   +P(150,600,house(),{s:.8})
+   +P(1080,600,school(),{s:.95})
+   +P(150,330,tag('Leave 8.25am',{size:22,bg:C.yellow}),{anim:'pop',d:.4})
+   +P(1080,214,tag('School starts 8.40am',{size:20,bg:'#fff'}),{anim:'pop',d:.7})
+   +P(250,634,group,{anim:'walk',d:1})
+   +P(640,170,tag('Walk with the pram, or drive',{size:22,bg:'#fff'}),{anim:'pop',d:3.6})
+   +P(640,228,tag('Entirely up to you',{size:18,bg:C.yellow,body:true}),{anim:'pop',d:4.2})
+   +P(860,240,mini(),{anim:'pop',d:4.4})
+   +head('STEP 8','8.25am');
+}
+function sDone(){
+  return wall('#3C7FD6')+confetti()+floor('sg')
+   +P(640,92,brickText('MISSION',420,82,C.red,'#fff',54),{anim:'drop',d:.2})
+   +P(640,190,brickText('COMPLETE',480,82,C.yellow,C.black,54),{anim:'drop',d:.5})
+   +P(640,282,tag('Thank you, Granny Pig!',{size:28,bg:'#fff'}),{anim:'pop',d:1.4})
+   +P(640,340,tag('Love, Joshua and Charlotte',{size:18,bg:C.yellow,body:true}),{anim:'pop',d:1.8})
+   +P(560,604,fig(GRANNY({armR:-45,expr:'grin',front:mug()})),{anim:'pop',d:.6})
+   +P(680,604,`<g class="jump">${fig(OTTO({armL:150,armLc:'waveL',expr:'grin'}))}</g>`,{s:.78,anim:'pop',d:.8})
+   +P(980,560,bubble('Forest is at school!',{size:20,dx:-30}),{anim:'pop',d:2.4});
+}
+
+const SCENES=[
+  {n:'Go',time:'This weekend',title:'Mum and Dad are off to Lincoln',dur:9,draw:sTitle,
+   text:'Joshua and Charlotte are away, so Granny Pig is in charge of Forest and Otto. Here is everything you need, from bedtime tonight to the school gate in the morning.',
+   parts:[['1x','Granny Pig'],['1x','Forest'],['1x','Otto'],['Lots','of patience']]},
+  {n:'1',time:'Tonight',title:'Bath night? Already done',dur:8.5,draw:sBath,
+   text:'They were both bathed last night, so there is no need for a bath tonight. Unless Forest demands one, which he usually does.',
+   parts:[['0x','Baths (probably)'],['1x','Towel, just in case']]},
+  {n:'2',time:'7.00pm',title:'Up to bed at 7pm',dur:9,draw:sBed,
+   text:'Pyjamas are already laid out on the bed. Make sure they both do a wee before getting into bed, and that Otto has a nappy on. Take their drinks up with you too.',
+   parts:[['2x','Pyjamas (on the bed)'],['2x','Wees'],['1x','Nappy for Otto'],['2x','Drinks']]},
+  {n:'3',time:'Story time',title:'Books, then lights off',dur:9.5,draw:sStory,
+   text:'Read some books together upstairs, then turn the lights off. They genuinely just snuggle down and go to sleep. Bedtime is usually super easy.',
+   parts:[['A few','Books'],['1x','Light switch']]},
+  {n:'4',time:'Overnight',title:'If they wake for a drink',dur:7.5,draw:sNight,
+   text:'Sometimes they want a little bit of their drink, or wake in the night for a sip. That is why the drinks go up with them. They go straight back to sleep afterwards.',
+   parts:[['2x','Drinks by the bed']]},
+  {n:'5',time:'6.30am to 7.00am',title:'A stir at 6.30, up at 7',dur:8,draw:sMorning,
+   text:'They start to stir at around 6.30 and then wake up properly on their own at about 7am.',
+   parts:[['1x','Cup of tea for Granny Pig']]},
+  {n:'6',time:'7.00am',title:'Breakfast comes first',dur:9.5,draw:sBreakfast,
+   text:'Do breakfast before anything else. They take forever to eat, so give it plenty of time. There is bread for toast and some fruit, as that is the quickest thing. Unless Otto demands something else.',
+   parts:[['1x','Loaf for toast'],['Some','Fruit'],['Loads','of time']]},
+  {n:'7',time:'Before leaving',title:'Bathroom before clothes',dur:10,draw:sBathroom,
+   text:'Do not get them dressed yet. Forest usually needs to do a poo (naked) and brush his teeth, and Otto does a wee on the potty or toilet just before you leave.',
+   parts:[['1x','Poo for Forest'],['1x','Toothbrush'],['1x','Wee for Otto']]},
+  {n:'8',time:'8.25am',title:'Dressed, then out the door',dur:10,draw:sSchool,
+   text:'Get them dressed just before you go. We usually leave at 8.25 and walk up with both of them in the pram. Forest starts school at 8.40. Driving up is fine too, entirely up to you.',
+   parts:[['2x','Sets of clothes'],['1x','Pram (or the car)']]},
+  {n:'Done',time:'8.40am',title:'Mission complete',dur:9,draw:sDone,
+   text:'Forest is at school and Otto is with you. Time for that cup of tea. Thank you so much, Granny Pig.',
+   parts:[['1x','Well earned cup of tea']]}
+];
+
+const ROUTINE=[
+  ['Tonight','No bath needed, unless Forest insists',1],
+  ['7.00pm','Up to bed. Pyjamas are on the bed',2],
+  ['7.00pm','Wee for both before bed',2],
+  ['7.00pm','Nappy on Otto',2],
+  ['7.00pm','Take their drinks upstairs',2],
+  ['Bedtime','Read some books, then lights off',3],
+  ['Overnight','A sip of drink if they wake, then back to sleep',4],
+  ['6.30am','They start to stir',5],
+  ['7.00am','Up. Breakfast first: toast and fruit',6],
+  ['Before leaving','Forest: poo (naked) and brush teeth',7],
+  ['Before leaving','Otto: wee on the potty or toilet',7],
+  ['Just before 8.25','Get them dressed',8],
+  ['8.25am','Leave. Walk with the pram, or drive',8],
+  ['8.40am','Forest starts school',8]
+];
+
+/* ---------- Player ---------- */
+const $=id=>document.getElementById(id);
+const stage=$('stage'), bar=$('bar'), playBtn=$('play');
+const reduce=window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+let idx=0, elapsed=0, playing=!reduce, last=null;
+
+SCENES.forEach((s,i)=>{
+  const b=document.createElement('button');
+  b.type='button';b.className='seg';b.setAttribute('aria-label',`Go to: ${s.title}`);
+  b.innerHTML='<span></span>';b.onclick=()=>show(i);
+  bar.appendChild(b);
+});
+
+function show(i){
+  idx=Math.max(0,Math.min(SCENES.length-1,i));elapsed=0;clipN=0;
+  const s=SCENES[idx];
+  stage.innerHTML=`<svg viewBox="0 0 1280 720" role="img" aria-label="${s.title.replace(/"/g,'')}" xmlns="http://www.w3.org/2000/svg">${DEFS}${s.draw()}</svg>`;
+  stage.classList.toggle('paused',!playing);
+  const num=$('cNum');num.textContent=s.n;num.classList.toggle('word',isNaN(+s.n));
+  $('cTime').textContent=s.time;$('cTitle').textContent=s.title;$('cText').textContent=s.text;
+  $('cParts').innerHTML=s.parts.map(([q,p])=>`<li><b>${q}</b>${p}</li>`).join('');
+  $('counter').textContent=`Scene ${idx+1} of ${SCENES.length}`;
+  paintBar();
+}
+function paintBar(){
+  [...bar.children].forEach((b,i)=>{
+    const w=i<idx?100:i>idx?0:Math.min(100,elapsed/SCENES[idx].dur*100);
+    b.firstChild.style.width=w+'%';
+  });
+}
+function setPlaying(p){
+  playing=p;stage.classList.toggle('paused',!p);
+  playBtn.textContent=p?'Pause':(idx===SCENES.length-1&&elapsed>=SCENES[idx].dur?'Replay':'Play');
+}
+function tick(ts){
+  if(last==null) last=ts;
+  const dt=Math.min(.1,(ts-last)/1000);last=ts;
+  if(playing){
+    elapsed+=dt;
+    if(elapsed>=SCENES[idx].dur){
+      if(idx<SCENES.length-1) show(idx+1);
+      else {elapsed=SCENES[idx].dur;setPlaying(false);}
+    }
+    paintBar();
+  }
+  requestAnimationFrame(tick);
+}
+playBtn.onclick=()=>{
+  if(!playing&&idx===SCENES.length-1&&elapsed>=SCENES[idx].dur){show(0);setPlaying(true);return;}
+  setPlaying(!playing);
+};
+$('prev').onclick=()=>show(idx-1);
+$('next').onclick=()=>show(idx+1);
+$('restart').onclick=()=>{show(0);setPlaying(true);};
+document.addEventListener('keydown',e=>{
+  if(e.target.closest('input,button,textarea,select')) return;
+  if(e.key==='ArrowRight') show(idx+1);
+  else if(e.key==='ArrowLeft') show(idx-1);
+  else if(e.key===' '){e.preventDefault();playBtn.click();}
+});
+
+/* ---------- Routine list ---------- */
+const KEY='granny-pig-ticks';
+let ticks={};
+try{ticks=JSON.parse(localStorage.getItem(KEY)||'{}')||{};}catch(e){ticks={};}
+const list=$('list');
+ROUTINE.forEach(([when,what,scene],i)=>{
+  const li=document.createElement('li');
+  const id='tick-'+i;
+  li.innerHTML=`<span class="when">${when}</span><label class="what" for="${id}"><input type="checkbox" id="${id}"><span>${what}</span></label><button type="button" class="watch">Watch</button>`;
+  const cb=li.querySelector('input');
+  cb.checked=!!ticks[i];li.classList.toggle('done',cb.checked);
+  cb.onchange=()=>{ticks[i]=cb.checked;li.classList.toggle('done',cb.checked);try{localStorage.setItem(KEY,JSON.stringify(ticks));}catch(e){}};
+  li.querySelector('.watch').onclick=()=>{show(scene);setPlaying(true);stage.scrollIntoView({behavior:reduce?'auto':'smooth',block:'center'});};
+  list.appendChild(li);
+});
+
+show(0);setPlaying(playing);
+requestAnimationFrame(tick);
+})();
+</script>
