@@ -249,6 +249,7 @@ function print(p,tb,tt){
     case 'dino': return `<path d="M-14 ${m+10} Q-12 ${m-4} 0 ${m-4} L6 ${m-14} Q14 ${m-14} 14 ${m-8} L8 ${m-6} L8 ${m+2} L12 ${m+10} Z" fill="${C.green}"/>`;
     case 'badge': return `<path d="M6 ${m-14} H18 V${m-6} Q12 ${m} 6 ${m-6} Z" fill="${C.yellow}"/>`;
     case 'vneck': return `<path d="M-9 ${tt} L0 ${tt+12} L9 ${tt}" fill="#fff"/>`;
+    case 'lanyard': return `<path d="M-10 ${tt} L0 ${m+4} L10 ${tt}" stroke="${C.red}" stroke-width="3" fill="none"/><rect x="-7" y="${m+2}" width="14" height="16" rx="2" fill="#fff"/>`;
     case 'zip': return `<path d="M0 ${tt+4} V${tb}" stroke="${shade('#000000',1.3)}" stroke-width="2"/>`;
   }
   return '';
@@ -418,6 +419,39 @@ function confetti(){
   }
   return s;
 }
+function stairs(){
+  let d='M320 600';
+  for(let i=0;i<8;i++) d+=` V${558-42*i} H${390+70*i}`;
+  d+=' H1010 V600 Z';
+  let s=`<path d="${d}" fill="${C.tan}"/>`;
+  for(let i=0;i<8;i++) s+=`<rect x="${320+70*i}" y="${558-42*i}" width="70" height="8" fill="${shade(C.tan,.8)}"/>`;
+  const ry=x=>450-(x-330)*.6;
+  for(let i=0;i<8;i++){const x=355+70*i;s+=`<rect x="${x-4}" y="${ry(x)}" width="8" height="${558-42*i-ry(x)}" fill="#fff"/>`;}
+  s+=`<path d="M330 450 L880 120" stroke="${C.rbrown}" stroke-width="14" stroke-linecap="round"/><rect x="318" y="430" width="24" height="170" rx="4" fill="${C.rbrown}"/><rect x="868" y="100" width="24" height="164" rx="4" fill="${C.rbrown}"/>`;
+  return s;
+}
+const railY=x=>450-(x-330)*.6;
+function jumper(c){return `<path d="M-30 4 L-46 54 L-36 58 L-24 22 Z M30 4 L46 54 L36 58 L24 22 Z" fill="${shade(c,.85)}"/><path d="M-30 4 L30 4 L34 64 H-34 Z" fill="${c}"/><rect x="-32" y="-6" width="64" height="13" rx="6" fill="${shade(c,.78)}"/>`}
+function trousers(c){return `<rect x="-24" y="4" width="22" height="66" rx="3" fill="${c}"/><rect x="2" y="4" width="22" height="66" rx="3" fill="${c}"/><rect x="-26" y="-6" width="52" height="13" rx="6" fill="${shade(c,.78)}"/>`}
+function railings(x0,x1,g0,g1){
+  const col='#24303C';let s='';
+  for(const [a,b] of [[x0,g0],[g1,x1]]){
+    s+=`<rect x="${a}" y="470" width="${b-a}" height="8" fill="${col}"/><rect x="${a}" y="572" width="${b-a}" height="8" fill="${col}"/>`;
+    for(let x=a+12;x<b-4;x+=24) s+=`<rect x="${x-3}" y="452" width="6" height="152" fill="${col}"/><path d="M${x-7} 456 L${x} 438 L${x+7} 456 Z" fill="${col}"/>`;
+  }
+  for(const x of [g0,g1]) s+=`<rect x="${x-9}" y="428" width="18" height="176" rx="3" fill="${C.dgrey}"/><circle cx="${x}" cy="424" r="11" fill="${C.yellow}"/>`;
+  return s;
+}
+function baguette(){return `<g transform="rotate(-14)"><rect x="-58" y="-13" width="116" height="26" rx="13" fill="#D9A55B"/>${[-34,-10,14,38].map(x=>`<path d="M${x-8} -6 L${x+8} 6" stroke="#F2D49A" stroke-width="4" stroke-linecap="round"/>`).join('')}</g>`}
+function lunchbox(){return `<path d="M-12 -22 V-28 H12 V-22" stroke="${C.navy}" stroke-width="4" fill="none"/><rect x="-26" y="-22" width="52" height="36" rx="6" fill="${C.blue}"/><path d="M-30 -30 L30 22 M30 -30 L-30 22" stroke="${C.red}" stroke-width="7" stroke-linecap="round"/>`}
+function thought(inner){return `<circle cx="-6" cy="-14" r="6" fill="#fff" stroke="${C.black}" stroke-width="3"/><circle cx="-16" cy="-36" r="10" fill="#fff" stroke="${C.black}" stroke-width="3"/><ellipse cx="0" cy="-104" rx="124" ry="54" fill="#fff" stroke="${C.black}" stroke-width="3"/>${inner}`}
+function nursery(){
+  const cols=[C.red,C.blue,C.lgreen,C.orange];
+  return `<path d="M-206 -196 L0 -300 L206 -196 Z" fill="${C.blue}"/><rect x="-182" y="-200" width="364" height="200" fill="${C.yellow}"/><rect x="-182" y="-200" width="364" height="200" fill="url(#bl)"/>`
+   +`<rect x="-124" y="-188" width="248" height="48" rx="8" fill="#fff"/><text y="-152" text-anchor="middle" class="td" font-size="32">${'NURSERY'.split('').map((c,i)=>`<tspan fill="${cols[i%4]}">${c}</tspan>`).join('')}</text>`
+   +[-122,122].map(x=>`<circle cx="${x}" cy="-84" r="30" fill="${C.lazure}" stroke="#fff" stroke-width="6"/>`).join('')
+   +`<rect x="-38" y="-108" width="76" height="108" rx="6" fill="${C.red}"/><circle cx="22" cy="-54" r="5" fill="${C.yellow}"/>`;
+}
 const DEFS=`<defs>${[['sg','#4B9F4A'],['sgr','#A0A5A9'],['st','#D9BB7B'],['sn','#2B3A5E']].map(([id,c])=>`<pattern id="${id}" width="40" height="40" patternUnits="userSpaceOnUse"><rect width="40" height="40" fill="${c}"/><circle cx="21.5" cy="21.5" r="11" fill="${shade(c,.8)}"/><circle cx="20" cy="20" r="11" fill="${shade(c,1.12)}"/></pattern>`).join('')}
 <pattern id="bl" width="80" height="40" patternUnits="userSpaceOnUse"><path d="M0 1H80 M0 21H80 M1 0V20 M41 20V40" stroke="#000" stroke-opacity=".07" stroke-width="2" fill="none"/></pattern>
 <pattern id="tiles" width="64" height="64" patternUnits="userSpaceOnUse"><rect width="64" height="64" fill="#F3F5F6"/><path d="M6 54 Q22 42 28 24 T58 6" stroke="#C6CDD3" stroke-width="1.3" fill="none"/><path d="M30 60 Q40 50 44 38" stroke="#D3D9DE" stroke-width="1" fill="none"/><rect x="1" y="1" width="62" height="62" fill="none" stroke="#BCC7D1" stroke-width="2"/></pattern>
@@ -547,7 +581,45 @@ function sSchool(){
    +P(640,170,tag('Walk with the pram, or drive',{size:22,bg:'#fff'}),{anim:'pop',d:3.6})
    +P(640,228,tag('Entirely up to you',{size:18,bg:C.yellow,body:true}),{anim:'pop',d:4.2})
    +P(860,240,mini(),{anim:'pop',d:4.4})
-   +head('STEP 8','8.25am');
+   +head('STEP 9','8.25am');
+}
+function sBanisters(){
+  return wall('#D7E8D0')+floor('st')+head('STEP 8','Just before 8.25')
+   +stairs()
+   +P(470,railY(470),jumper(C.navy),{anim:'drop',d:.6})+P(540,railY(540),trousers(C.dgrey),{anim:'drop',d:.8})
+   +P(690,railY(690),jumper(C.red),{anim:'drop',d:1})+P(760,railY(760),trousers(C.blue),{anim:'drop',d:1.2})
+   +`<g class="anim fadeout" style="animation-delay:5s">${P(140,604,fig(PJF()),{s:.85})}${P(230,604,fig(PJO()),{s:.75})}</g>`
+   +`<g class="anim fade" style="animation-delay:5s">${P(140,604,fig(FOREST({shirt:C.navy,pants:C.dgrey,print:'badge',expr:'grin'})),{s:.85})}${P(230,604,fig(OTTO({shirt:C.red,print:'zip',expr:'grin'})),{s:.75})}</g>`
+   +P(1120,604,fig(GRANNY({armR:-150,armRc:'wave'})),{anim:'pop',d:.2})
+   +P(214,180,tag('Clothes are on the banisters',{size:22,bg:'#fff'}),{anim:'pop',d:1.6})
+   +P(214,238,tag('Dress them just before you leave',{size:18,bg:C.yellow,body:true}),{anim:'pop',d:3.4});
+}
+function sGates(){
+  return sky('gDay')+P(220,110,cloud(),{s:.7,anim:'float',loop:true})+floor('sg')
+   +P(1070,604,school(),{s:.9})
+   +P(900,604,fig({shirt:C.purple,pants:C.black,hair:'long',hairC:C.brown,print:'lanyard',armR:-150,armRc:'wave',expr:'grin'}),{anim:'pop',d:.4})
+   +P(1000,604,fig({shirt:C.azure,pants:C.navy,hair:'man',hairC:'#2E2A26',print:'lanyard',armL:150,armLc:'waveL'}),{anim:'pop',d:.6})
+   +railings(560,1280,650,790)
+   +P(270,604,fig(GRANNY({armR:-62})))
+   +P(440,604,pram(P(-8,-44,fig(OTTO({shirt:C.red,print:'zip',expr:'grin'})),{s:.7})))
+   +P(720,604,fig(FOREST({shirt:C.navy,pants:C.dgrey,print:'badge',armL:150,armLc:'waveL',expr:'grin'})),{s:.85,anim:'pop',d:.2})
+   +P(712,472,thought(P(-50,-104,baguette())+P(66,-104,lunchbox())),{anim:'pop',d:3.6})
+   +P(640,170,tag('Just drop him at the gates',{size:24,bg:'#fff'}),{anim:'pop',d:.8})
+   +P(640,228,tag('School dinners now: a baguette. No packed lunch.',{size:18,bg:C.yellow,body:true}),{anim:'pop',d:4.2})
+   +P(1000,672,tag('Teachers and TAs take them in',{size:20,bg:'#fff'}),{anim:'pop',d:1.8})
+   +head('STEP 10','8.40am');
+}
+function sNursery(){
+  return sky('gDay')+P(180,100,cloud(),{s:.8,anim:'float',loop:true})+P(700,300,cloud(),{s:.5,anim:'float',loop:true,d:-2})+floor('sg')
+   +`<rect y="596" width="1280" height="56" fill="${C.lgrey}"/>`
+   +P(980,604,nursery())
+   +P(360,620,fig(GRANNY({armR:-30,front:P(50,-48,potty(),{s:.75,anim:'pop',d:2.2})})))
+   +P(480,620,`<g class="jump">${fig(OTTO({shirt:C.red,print:'zip',armL:150,armLc:'waveL',expr:'grin'}))}</g>`,{s:.75,anim:'pop',d:.3})
+   +P(360,372,tag('Take his potty in with him',{size:20,bg:C.yellow}),{anim:'pop',d:2.6})
+   +P(482,498,bubble("I'll wee this time!",{size:20,dx:40}),{anim:'pop',d:4.6})
+   +P(640,170,tag('Then Otto to nursery',{size:24,bg:'#fff'}),{anim:'pop',d:.6})
+   +P(640,228,tag('You drop off and pick up. Nursery know it is you.',{size:18,bg:C.yellow,body:true}),{anim:'pop',d:1.4})
+   +head('STEP 11','Nursery');
 }
 function sDone(){
   return wall('#3C7FD6')+confetti()+floor('sg')
@@ -555,9 +627,9 @@ function sDone(){
    +P(640,190,brickText('COMPLETE',480,82,C.yellow,C.black,54),{anim:'drop',d:.5})
    +P(640,282,tag('Thank you, Granny Pig!',{size:28,bg:'#fff'}),{anim:'pop',d:1.4})
    +P(640,340,tag('Love, Joshua and Charlotte',{size:18,bg:C.yellow,body:true}),{anim:'pop',d:1.8})
-   +P(560,604,fig(GRANNY({armR:-45,expr:'grin',front:mug()})),{anim:'pop',d:.6})
-   +P(680,604,`<g class="jump">${fig(OTTO({armL:150,armLc:'waveL',expr:'grin'}))}</g>`,{s:.78,anim:'pop',d:.8})
-   +P(980,560,bubble('Forest is at school!',{size:20,dx:-30}),{anim:'pop',d:2.4});
+   +P(640,604,fig(GRANNY({armR:-45,expr:'grin',front:mug()})),{anim:'pop',d:.6})
+   +P(300,560,bubble('Otto is at nursery!',{size:20,dx:30}),{anim:'pop',d:2.4})
+   +P(980,560,bubble('Forest is at school!',{size:20,dx:-30}),{anim:'pop',d:2.9});
 }
 
 const SCENES=[
@@ -585,11 +657,20 @@ const SCENES=[
   {n:'7',time:'Before leaving',title:'Bathroom before clothes',dur:10,draw:sBathroom,
    text:'Do not get them dressed yet. Forest usually needs to do a poo (naked) and brush his teeth, and Otto does a wee on the potty or toilet just before you leave.',
    parts:[['1x','Poo for Forest'],['1x','Toothbrush'],['1x','Wee for Otto']]},
-  {n:'8',time:'8.25am',title:'Dressed, then out the door',dur:10,draw:sSchool,
-   text:'Get them dressed just before you go. We usually leave at 8.25 and walk up with both of them in the pram. Forest starts school at 8.40. Driving up is fine too, entirely up to you.',
-   parts:[['2x','Sets of clothes'],['1x','Pram (or the car)']]},
+  {n:'8',time:'Just before 8.25',title:'Clothes are on the banisters',dur:8.5,draw:sBanisters,
+   text:'Both of their clothes are already on the banisters for the morning. Get them dressed just before you leave, once the bathroom jobs are done.',
+   parts:[['2x','Sets of clothes (on the banisters)']]},
+  {n:'9',time:'8.25am',title:'Out the door at 8.25',dur:10,draw:sSchool,
+   text:'We usually leave at 8.25 and walk up with both of them in the pram. Forest starts school at 8.40. Driving up is fine too, entirely up to you.',
+   parts:[['1x','Pram (or the car)']]},
+  {n:'10',time:'8.40am',title:'Drop Forest at the gates',dur:9.5,draw:sGates,
+   text:'Drop off is literally just outside the school gates now, not inside. There are teachers and TAs there to take them in. He has school dinners now (a baguette), not a packed lunch, so he sorts himself out with that.',
+   parts:[['0x','Packed lunches'],['1x','Baguette (school provides)']]},
+  {n:'11',time:'Nursery',title:'Otto to nursery, with his potty',dur:9.5,draw:sNursery,
+   text:'Otto\'s nursery know it will be you dropping him off and picking him up. They have asked if we can take his potty in tomorrow with him, as he had to be picked up early on Monday after not doing a wee all day.',
+   parts:[['1x','Potty (goes in with Otto)'],['1x','Drop off'],['1x','Pick up']]},
   {n:'Done',time:'8.40am',title:'Mission complete',dur:9,draw:sDone,
-   text:'Forest is at school and Otto is with you. Time for that cup of tea. Thank you so much, Granny Pig.',
+   text:'Forest is at school and Otto is at nursery with his potty. Time for that cup of tea. Thank you so much, Granny Pig.',
    parts:[['1x','Well earned cup of tea']]}
 ];
 
@@ -605,9 +686,12 @@ const ROUTINE=[
   ['7.00am','Up. Breakfast first: toast and fruit',6],
   ['Before leaving','Forest: poo (naked) and brush teeth',7],
   ['Before leaving','Otto: wee on the potty or toilet',7],
-  ['Just before 8.25','Get them dressed',8],
-  ['8.25am','Leave. Walk with the pram, or drive',8],
-  ['8.40am','Forest starts school',8]
+  ['Just before 8.25','Get them dressed. Clothes are on the banisters',8],
+  ['8.25am','Leave. Walk with the pram, or drive',9],
+  ['8.40am','Drop Forest outside the gates. Teachers and TAs take them in',10],
+  ['Lunch','School dinners now (a baguette). No packed lunch needed',10],
+  ['Nursery','Drop Otto off, and take his potty in with him',11],
+  ['Later','Pick Otto up from nursery. They know it is you',11]
 ];
 
 /* ---------- Player ---------- */
